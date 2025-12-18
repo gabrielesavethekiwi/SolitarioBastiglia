@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Peg33</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="theme-color" content="#0f1115" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="title">
+        <div class="name">Peg33</div>
+        <div id="status" class="status">ready</div>
+      </div>
+      <div class="actions">
+        <button id="btnUndo" class="btn">Undo</button>
+        <button id="btnReset" class="btn">Reset</button>
+        <button id="btnSolve" class="btn primary">Auto-solve</button>
+      </div>
+    </header>
+
+    <main>
+      <canvas id="board" width="720" height="720" aria-label="Peg solitaire board"></canvas>
+
+      <section class="panel">
+        <div class="row">
+          <button id="btnHint" class="btn">Hint</button>
+          <button id="btnMistake" class="btn danger">Find mistake</button>
+          <button id="btnLatest" class="btn">Latest</button>
+        </div>
+
+        <div class="row">
+          <input id="timeline" type="range" min="0" max="0" value="0" />
+        </div>
+
+        <details id="settings">
+          <summary>Modes & Settings</summary>
+          <div class="grid">
+            <label class="toggle"><input id="chkAutoCheck" type="checkbox"> Auto-check winnable</label>
+            <label class="toggle"><input id="chkTargets" type="checkbox" checked> Highlight targets</label>
+            <label class="toggle"><input id="chkTrainer" type="checkbox"> Trainer (AI replies)</label>
+            <label class="toggle"><input id="chkChallenge" type="checkbox"> Challenge (3 lives)</label>
+
+            <div class="small">
+              <div>Lives: <span id="lives">—</span></div>
+              <div>Winnable: <span id="winnable">—</span></div>
+            </div>
+
+            <div class="small">
+              <label>Check budget (s)
+                <input id="checkBudget" type="number" min="0.2" max="30" step="0.2" value="2.0">
+              </label>
+              <label>Solve budget (s)
+                <input id="solveBudget" type="number" min="1" max="120" step="1" value="10">
+              </label>
+            </div>
+          </div>
+        </details>
+
+        <div id="log" class="log"></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+    <div id="celebrate" class="celebrate" hidden>
+      <div class="celebrateCard">
+        <div class="big">✅ SOLVED</div>
+        <div class="sub">One peg at the center.</div>
+        <button id="btnCloseCelebrate" class="btn primary">Nice.</button>
+      </div>
+      <canvas id="confetti" width="720" height="720"></canvas>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

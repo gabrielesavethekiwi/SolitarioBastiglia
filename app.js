@@ -6,14 +6,10 @@ const $ = (id) => document.getElementById(id);
 
 const canvas = $("board");
 const ctx = canvas.getContext("2d");
-const confettiCanvas = $("confetti");
-const cctx = confettiCanvas.getContext("2d");
 
 const statusEl = $("status");
 const logEl = $("log");
 const toastEl = $("toast");
-const celebrateEl = $("celebrate");
-const btnCloseCelebrate = $("btnCloseCelebrate");
 
 const btnUndo = $("btnUndo");
 const btnReset = $("btnReset");
@@ -245,7 +241,9 @@ function render(){
     const dt = performance.now() - flash.t0;
     if (dt > flash.dt){
       flash = null;
-    } else {
+    }
+  else {
+
       flashAlpha = Math.max(0, 1 - dt/flash.dt);
       flashCells = flash.cells;
     }
@@ -304,7 +302,9 @@ canvas.addEventListener("pointerdown", (e)=>{
     dragPos = {x,y};
     selected = c;
     render();
-  } else {
+  }
+  else {
+
     selected = null;
     render();
   }
@@ -359,12 +359,10 @@ function toast(msg){
 }
 
 function winCelebrate(){
-  celebrateEl.hidden = false;
-  // confetti
-  startConfetti();
+  toast("✅ SOLVED!");
+  say("✅ SOLVED!");
+  startConfetti(1200);
 }
-btnCloseCelebrate.addEventListener("click", ()=>{ celebrateEl.hidden = true; });
-btnCloseCelebrate.addEventListener("pointerup", ()=>{ celebrateEl.hidden = true; });
 
 let lives = 3;
 function resetGame(){
@@ -620,7 +618,9 @@ chkChallenge.addEventListener("change", ()=>{
   if (chkChallenge.checked){
     lives = 3;
     say("Challenge ON: 3 lives, rewinds on proven unwinnable.");
-  } else {
+  }
+  else {
+
     say("Challenge OFF.");
   }
   updateStatus();
@@ -645,16 +645,27 @@ function animateSolution(sol){
   setTimeout(()=>animateSolution(sol), 70);
 }
 
-// confetti (cheap)
+// confetti (cheap, no modal; creates a temporary overlay canvas)
 let confetti = [];
-function startConfetti(){
+function startConfetti(durationMs=1200){
+  const overlay = document.createElement("canvas");
+  overlay.style.position = "fixed";
+  overlay.style.inset = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.pointerEvents = "none";
+  overlay.style.zIndex = "9999";
+  document.body.appendChild(overlay);
+
   const dpr = window.devicePixelRatio || 1;
-  confettiCanvas.width = Math.floor(window.innerWidth*dpr);
-  confettiCanvas.height = Math.floor(window.innerHeight*dpr);
+  overlay.width = Math.floor(window.innerWidth*dpr);
+  overlay.height = Math.floor(window.innerHeight*dpr);
+  const cctx = overlay.getContext("2d");
   cctx.setTransform(dpr,0,0,dpr,0,0);
+
   confetti = [];
   const colors = ["#d6b24e","#55c271","#5b86b5","#ff5a5f","#ffffff"];
-  for (let i=0;i<180;i++){
+  for (let i=0;i<160;i++){
     confetti.push({
       x: window.innerWidth/2,
       y: window.innerHeight/2,
@@ -666,10 +677,9 @@ function startConfetti(){
       c: colors[(Math.random()*colors.length)|0]
     });
   }
-  let t0 = performance.now();
-  function step(t){
-    const dt = Math.min(32, t - t0);
-    t0 = t;
+
+  const tEnd = performance.now() + durationMs;
+  function step(){
     cctx.clearRect(0,0,window.innerWidth,window.innerHeight);
     for (const p of confetti){
       p.x += p.vx; p.y += p.vy; p.vy += p.g;
@@ -680,10 +690,12 @@ function startConfetti(){
       cctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       cctx.fill();
     }
-    if (!celebrateEl.hidden){
+    if (performance.now() < tEnd){
       requestAnimationFrame(step);
-    } else {
-      cctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    }
+  else {
+
+      overlay.remove();
     }
   }
   requestAnimationFrame(step);

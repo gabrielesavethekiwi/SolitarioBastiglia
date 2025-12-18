@@ -30,8 +30,5 @@ summary{cursor:pointer; color:var(--muted); font-weight:700; padding:6px 0;}
   background:#0f1115; border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:10px; min-height:74px; color:rgba(255,255,255,.88); font-size:12px; white-space:pre-wrap;}
 .toast{position:fixed; left:50%; transform:translateX(-50%); bottom:16px; background:rgba(0,0,0,.65); padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.16); color:var(--text); font-weight:700; opacity:0; pointer-events:none; transition:opacity .18s;}
 .toast.show{opacity:1;}
-.celebrate{position:fixed; inset:0; background: rgba(0,0,0,.55); display:grid; place-items:center; padding:18px; z-index: 9999;}
-.celebrateCard{background:var(--panel); border:1px solid rgba(255,255,255,.14); border-radius:18px; padding:16px; text-align:center; max-width:360px; position: relative; z-index: 10000;}
 .celebrateCard .big{font-size:26px; font-weight:900;}
 .celebrateCard .sub{margin-top:6px; color:var(--muted); font-weight:700;}
-#confetti{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index: 9998;}

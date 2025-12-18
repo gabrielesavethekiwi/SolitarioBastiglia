@@ -363,9 +363,8 @@ function winCelebrate(){
   // confetti
   startConfetti();
 }
-btnCloseCelebrate.addEventListener("click", ()=>{
-  celebrateEl.hidden = true;
-});
+btnCloseCelebrate.addEventListener("click", ()=>{ celebrateEl.hidden = true; });
+btnCloseCelebrate.addEventListener("pointerup", ()=>{ celebrateEl.hidden = true; });
 
 let lives = 3;
 function resetGame(){
